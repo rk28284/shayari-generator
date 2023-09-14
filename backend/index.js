@@ -1,17 +1,24 @@
 const express = require('express');
 const axios = require('axios');
+const cors = require('cors'); // Import the cors middleware
 require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
+app.use(cors()); // Use the cors middleware to enable CORS
+
+app.get("/",(req,res)=>{
+  res.send("Welcome to the homepage of Shayari-Chatgpt Backend")
+});
 
 app.get('/shayari', async (req, res) => {
   try {
     const keyword = req.query.keyword;
-    const response = await axios.post('https://api.openai.com/v1/engines/davinci-codex/completions', {
-      prompt: `Shayari about ${keyword}`,
+    const response = await axios.post('https://api.openai.com/v1/engines/text-davinci-003/completions', {
+    
+    prompt: `Shayari about ${keyword}`,
       max_tokens: 100,
       temperature: 0.7,
       n: 1
