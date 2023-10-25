@@ -12,26 +12,30 @@ import {
 
 const Shyari = () => {
   const [topic, setTopic] = useState('');
-  const [query, setQuery] = useState('');
+  const [keyword, setKeyword] = useState('');
   const [response, setResponse] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-
+console.log(topic);
+console.log(keyword);
+console.log(response);
+console.log(isLoading);
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
-      const response = await fetch('https://chatgtp-tjq4.onrender.com/shayari', {
+      const response = await fetch(`https://shyaribackendopenai.onrender.com/get?type=${topic}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ topic, query }),
+        body: JSON.stringify({keyword:keyword }),
       });
 
       if (response.status === 200) {
         const data = await response.json();
-        setResponse(data.shayari);
+        setResponse(data.result);
+        console.log(response);
       } else {
         setResponse(`Error: ${response.statusText}`);
       }
@@ -63,13 +67,13 @@ const Shyari = () => {
             onChange={(e) => setTopic(e.target.value)}
           />
         </FormControl>
-        <FormControl id="query" isRequired mt={2}>
+        <FormControl id="keyword" isRequired mt={2}>
           <FormLabel>Subject:</FormLabel>
           <Input
             type="text"
-            name="query"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            name="keyword"
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
           />
         </FormControl>
         <Button type="submit" isLoading={isLoading} mt={4}>
